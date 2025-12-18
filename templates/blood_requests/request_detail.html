@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Blood Request Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-hand-holding-medical"></i> Blood Request Details</h2>
+        <div>
+            {% if user.user_type == 'admin' %}
+            <a href="{% url 'blood_request_update' blood_request.pk %}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Update Status
+            </a>
+            {% endif %}
+            <a href="{% url 'blood_request_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-user-injured"></i> Patient Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th width="40%">Patient Name:</th>
+                        <td>{{ blood_request.patient_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Blood Group:</th>
+                        <td><span class="blood-group-badge bg-danger text-white">{{ blood_request.blood_group }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Units Required:</th>
+                        <td>{{ blood_request.units_required }}</td>
+                    </tr>
+                    <tr>
+                        <th>Urgency:</th>
+                        <td>
+                            <span class="badge bg-{% if blood_request.urgency == 'critical' %}danger{% elif blood_request.urgency == 'high' %}warning{% else %}info{% endif %}">
+                                {{ blood_request.get_urgency_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Required By:</th>
+                        <td>{{ blood_request.required_by_date|date:"M d, Y" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-hospital"></i> Hospital Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th width="40%">Hospital Name:</th>
+                        <td>{{ blood_request.hospital_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Address:</th>
+                        <td>{{ blood_request.hospital_address }}</td>
+                    </tr>
+                    <tr>
+                        <th>City:</th>
+                        <td>{{ blood_request.city }}</td>
+                    </tr>
+                    <tr>
+                        <th>Contact:</th>
+                        <td>{{ blood_request.contact_number }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Additional Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Requested By:</strong> {{ blood_request.requester.get_full_name }}</p>
+                <p><strong>Requested Date:</strong> {{ blood_request.requested_date|date:"M d, Y h:i A" }}</p>
+                <p><strong>Status:</strong> <span class="status-badge status-{{ blood_request.status }}">{{ blood_request.get_status_display }}</span></p>
+                <p><strong>Reason:</strong> {{ blood_request.reason }}</p>
+                {% if blood_request.approved_by %}
+                <p><strong>Reviewed By:</strong> {{ blood_request.approved_by.get_full_name }}</p>
+                <p><strong>Review Date:</strong> {{ blood_request.approved_date|date:"M d, Y h:i A" }}</p>
+                {% endif %}
+                {% if blood_request.rejection_reason %}
+                <p><strong>Rejection Reason:</strong> {{ blood_request.rejection_reason }}</p>
+                {% endif %}
+                {% if blood_request.notes %}
+                <p><strong>Notes:</strong> {{ blood_request.notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card success">
+            <h5><i class="fas fa-users"></i> Total Donors</h5>
+            <h2 class="display-5">{{ total_donors }}</h2>
+            <small>{{ available_donors }} available</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h5><i class="fas fa-hospital"></i> Blood Banks</h5>
+            <h2 class="display-5">{{ total_blood_banks }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card warning">
+            <h5><i class="fas fa-hand-holding-medical"></i> Pending Requests</h5>
+            <h2 class="display-5">{{ pending_requests }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card danger">
+            <h5><i class="fas fa-check-circle"></i> Pending Donations</h5>
+            <h2 class="display-5">{{ pending_donations }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-tint"></i> Blood Inventory by Group</h5>
+            </div>
+            <div class="card-body">
+                {% if blood_inventory %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>Total Units</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in blood_inventory %}
+                            <tr>
+                                <td><span class="blood-group-badge bg-danger text-white">{{ item.blood_group }}</span></td>
+                                <td><strong>{{ item.total_units|floatformat:2 }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No inventory data</p>
+                {% endif %}
+                <a href="{% url 'blood_inventory_list' %}" class="btn btn-danger btn-sm">Manage Inventory</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-users"></i> Donors by Blood Group</h5>
+            </div>
+            <div class="card-body">
+                {% if donors_by_blood_group %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>Donor Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in donors_by_blood_group %}
+                            <tr>
+                                <td><span class="blood-group-badge bg-info text-white">{{ item.blood_group }}</span></td>
+                                <td><strong>{{ item.count }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No donor data</p>
+                {% endif %}
+                <a href="{% url 'admin_donors_list' %}" class="btn btn-info btn-sm">View All Donors</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-warning d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-hand-holding-medical"></i> Recent Blood Requests</h5>
+                <a href="{% url 'blood_request_list' %}" class="btn btn-sm btn-dark">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_requests %}
+                <div class="list-group">
+                    {% for request in recent_requests %}
+                    <a href="{% url 'blood_request_detail' request.pk %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="mb-1">{{ request.patient_name }}</h6>
+                                <small>{{ request.blood_group }} - {{ request.units_required }} units</small>
+                            </div>
+                            <span class="status-badge status-{{ request.status }}">{{ request.get_status_display }}</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No recent requests</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-success d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-check-circle"></i> Recent Donations</h5>
+                <a href="{% url 'donation_approval_list' %}" class="btn btn-sm btn-light">Pending Approvals</a>
+            </div>
+            <div class="card-body">
+                {% if recent_donations %}
+                <div class="list-group">
+                    {% for donation in recent_donations %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="mb-1">{{ donation.donor.user.get_full_name }}</h6>
+                                <small>{{ donation.units }} units on {{ donation.donation_date|date:"M d, Y" }}</small>
+                            </div>
+                            <span class="status-badge status-{{ donation.status }}">{{ donation.get_status_display }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No recent donations</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-tasks"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'admin_donors_list' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-users"></i> Manage Donors
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'blood_bank_list' %}" class="btn btn-outline-success w-100">
+                            <i class="fas fa-hospital"></i> Manage Blood Banks
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'blood_request_list' %}" class="btn btn-outline-warning w-100">
+                            <i class="fas fa-hand-holding-medical"></i> View Requests
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'donation_approval_list' %}" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-check-circle"></i> Approve Donations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

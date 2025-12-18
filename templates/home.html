@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Blood Management System{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 fw-bold text-danger mb-4">
+            <i class="fas fa-heartbeat"></i> Blood Management System
+        </h1>
+        <p class="lead mb-5">
+            Save lives by donating blood. Connect donors with those in need. 
+            Manage blood banks efficiently.
+        </p>
+        
+        {% if not user.is_authenticated %}
+        <div class="d-grid gap-3 d-md-flex justify-content-md-center mb-5">
+            <a href="{% url 'register' %}" class="btn btn-danger btn-lg px-5">
+                <i class="fas fa-user-plus"></i> Register as Donor
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-danger btn-lg px-5">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="display-3 text-danger mb-3">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3 class="card-title">Donate Blood</h3>
+                <p class="card-text">
+                    Register as a donor and help save lives. Your blood donation can make a difference.
+                </p>
+                {% if user.is_authenticated and user.user_type == 'donor' %}
+                <a href="{% url 'donation_create' %}" class="btn btn-danger">Donate Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="display-3 text-danger mb-3">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="card-title">Find Donors</h3>
+                <p class="card-text">
+                    Search for blood donors by blood group and location. Get connected instantly.
+                </p>
+                <a href="{% url 'donor_search' %}" class="btn btn-danger">Search Donors</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <div class="display-3 text-danger mb-3">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3 class="card-title">Request Blood</h3>
+                <p class="card-text">
+                    Need blood urgently? Submit a request and we'll help you find the right donor.
+                </p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'blood_request_create' %}" class="btn btn-danger">Request Blood</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-danger">Login to Request</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center py-5">
+                <h2 class="mb-4">Why Donate Blood?</h2>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="display-6 mb-3"><i class="fas fa-heart-pulse"></i></div>
+                        <h5>Save Lives</h5>
+                        <p>One donation can save up to 3 lives</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="display-6 mb-3"><i class="fas fa-shield-heart"></i></div>
+                        <h5>Health Benefits</h5>
+                        <p>Regular donation improves cardiovascular health</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="display-6 mb-3"><i class="fas fa-hands-helping"></i></div>
+                        <h5>Help Community</h5>
+                        <p>Be a hero in your community</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="display-6 mb-3"><i class="fas fa-vial"></i></div>
+                        <h5>Free Health Check</h5>
+                        <p>Get free health screening with each donation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 mb-5">
+    <div class="col-12 text-center">
+        <h2 class="mb-4">Blood Types Compatibility</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Blood Type</th>
+                        <th>Can Donate To</th>
+                        <th>Can Receive From</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>O-</strong></td>
+                        <td>All Blood Types</td>
+                        <td>O-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>O+</strong></td>
+                        <td>O+, A+, B+, AB+</td>
+                        <td>O-, O+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A-</strong></td>
+                        <td>A-, A+, AB-, AB+</td>
+                        <td>O-, A-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A+</strong></td>
+                        <td>A+, AB+</td>
+                        <td>O-, O+, A-, A+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B-</strong></td>
+                        <td>B-, B+, AB-, AB+</td>
+                        <td>O-, B-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B+</strong></td>
+                        <td>B+, AB+</td>
+                        <td>O-, O+, B-, B+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AB-</strong></td>
+                        <td>AB-, AB+</td>
+                        <td>O-, A-, B-, AB-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AB+</strong></td>
+                        <td>AB+</td>
+                        <td>All Blood Types</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Donors List - Admin{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-users"></i> Donors Management</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <select name="blood_group" class="form-control">
+                            <option value="">All Blood Groups</option>
+                            {% for group in blood_groups %}
+                            <option value="{{ group.0 }}" {% if selected_blood_group == group.0 %}selected{% endif %}>{{ group.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="is_available" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="true" {% if selected_is_available == 'true' %}selected{% endif %}>Available</option>
+                            <option value="false" {% if selected_is_available == 'false' %}selected{% endif %}>Not Available</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-filter"></i> Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if donors %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted">Total: {{ donors.count }} donor(s)</p>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-danger">
+                            <tr>
+                                <th>Name</th>
+                                <th>Blood Group</th>
+                                <th>City</th>
+                                <th>Phone</th>
+                                <th>Last Donation</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for donor in donors %}
+                            <tr>
+                                <td>{{ donor.user.get_full_name }}</td>
+                                <td><span class="blood-group-badge bg-danger text-white">{{ donor.blood_group }}</span></td>
+                                <td>{{ donor.city }}</td>
+                                <td>{{ donor.user.phone_number|default:"N/A" }}</td>
+                                <td>{{ donor.last_donation_date|date:"M d, Y"|default:"Never" }}</td>
+                                <td>
+                                    {% if donor.is_available %}
+                                        <span class="badge bg-success">Available</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Not Available</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> No donors found.
+</div>
+{% endif %}
+{% endblock %}

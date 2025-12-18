@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Blood Request{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3><i class="fas fa-hand-holding-medical"></i> Request Blood</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Patient Name *</label>
+                            {{ form.patient_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Blood Group *</label>
+                            {{ form.blood_group }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Units Required *</label>
+                            {{ form.units_required }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Urgency *</label>
+                            {{ form.urgency }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Required By Date *</label>
+                            {{ form.required_by_date }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hospital Name *</label>
+                        {{ form.hospital_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hospital Address *</label>
+                        {{ form.hospital_address }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">City *</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Contact Number *</label>
+                            {{ form.contact_number }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Requirement *</label>
+                        {{ form.reason }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">Submit Request</button>
+                        <a href="{% url 'blood_request_list' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

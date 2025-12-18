@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Donors{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-search"></i> Search Blood Donors</h2>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-5">
+                        <label class="form-label">Blood Group</label>
+                        <select name="blood_group" class="form-control">
+                            <option value="">All Blood Groups</option>
+                            {% for group in blood_groups %}
+                            <option value="{{ group.0 }}" {% if selected_blood_group == group.0 %}selected{% endif %}>{{ group.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">City</label>
+                        <input type="text" name="city" class="form-control" value="{{ selected_city }}" placeholder="Enter city">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if donors %}
+<div class="row">
+    <div class="col-12">
+        <p class="text-muted">Found {{ donors.count }} available donor(s)</p>
+    </div>
+    {% for donor in donors %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0">
+                        {% if donor.profile_photo %}
+                            <img src="{{ donor.profile_photo.url }}" class="rounded-circle" width="80" height="80">
+                        {% else %}
+                            <div class="display-4 text-danger"><i class="fas fa-user-circle"></i></div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>{{ donor.user.get_full_name }}</h5>
+                        <p class="mb-1">
+                            <strong>Blood Group:</strong> 
+                            <span class="blood-group-badge bg-danger text-white">{{ donor.blood_group }}</span>
+                        </p>
+                        <p class="mb-1"><strong>City:</strong> {{ donor.city }}</p>
+                        <p class="mb-1"><strong>Gender:</strong> {{ donor.get_gender_display }}</p>
+                        {% if donor.user.phone_number %}
+                        <p class="mb-1"><strong>Contact:</strong> {{ donor.user.phone_number }}</p>
+                        {% endif %}
+                        {% if donor.last_donation_date %}
+                        <p class="mb-0"><small class="text-muted">Last Donation: {{ donor.last_donation_date|date:"M d, Y" }}</small></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> No donors found matching your criteria. Try different search parameters.
+</div>
+{% endif %}
+{% endblock %}
