@@ -4,7 +4,7 @@
 
 ### Step 1: Install Dependencies
 ```bash
-cd /Users/msumon87/www/PythonProject/blood-management
+cd /project-dir
 pip install -r requirements.txt
 ```
 
@@ -155,35 +155,6 @@ The application is fully responsive and works on:
 - Tablets (iPad, Android tablets)
 - Mobile phones (iPhone, Android)
 
-## 🌟 Bonus Features Implemented
-
-✅ Email notifications (console in development)
-✅ Profile photo upload
-✅ Blood request tracking with statuses
-✅ Urgency levels for requests
-✅ Location-based donor search
-✅ Real-time inventory management
-✅ Comprehensive statistics dashboard
-✅ Medical conditions tracking
-✅ Last donation date tracking
-✅ Donor availability toggle
-
-## 📚 Next Steps
-
-1. **Customize**: Update branding, colors, logos
-2. **Email**: Configure SMTP for real email notifications
-3. **Deploy**: Host on Render, Railway, or PythonAnywhere
-4. **Database**: Switch to PostgreSQL for production
-5. **Features**: Add charts, SMS notifications, payment integration
-
-## 💡 Tips
-
-- Use Chrome DevTools to test responsive design
-- Check console for email notifications in development
-- Use Django admin for quick data management
-- Take screenshots for documentation
-- Test all user journeys before submission
-
 ## 🎓 Learning Outcomes
 
 This project demonstrates:
@@ -193,7 +164,6 @@ This project demonstrates:
 - Template inheritance
 - Bootstrap responsive design
 - File uploads (images)
-- Email integration
 - Admin customization
 - Database migrations
 - URL routing
