@@ -9,8 +9,10 @@ A comprehensive full-stack Blood Management System built with Django, Django Res
 
 ## 👨‍💻 Author
 **Md. Moniruzzaman Sumon**
- Email: msumon.bjit@gmail.com
- GitHub: @MSumon89
+
+Email: msumon.bjit@gmail.com
+
+GitHub: @MSumon89
 
 ## 🌟 Features
 
