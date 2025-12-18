@@ -7,6 +7,11 @@ A comprehensive full-stack Blood Management System built with Django, Django Res
 ![DRF](https://img.shields.io/badge/DRF-latest-red)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)
 
+## 👨‍💻 Author
+Md. Moniruzzaman Sumon
+Email: msumon.bjit@gmail.com
+GitHub: @MSumon89
+
 ## 🌟 Features
 
 ### User Authentication
